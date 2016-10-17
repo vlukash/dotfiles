@@ -1,0 +1,42 @@
+[user]
+	name = Volodymyr Lukashevych
+	email = v.lukashevych@gmail.com
+[core]
+	autocrlf = true
+	excludesfile = C:\\Users\\lukashvo\\Documents\\gitignore_global.txt
+	preloadindex = true
+	fscache = true
+	editor = 'C:\\Program Files (x86)\\Notepad2\\Notepad2.exe'
+[credential]
+	helper = manager
+[alias]
+	lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+	lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+	lgc1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
+	lgc2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+	lg = !"git lg1"
+	lgc = !"git lgc1"
+	show-files = diff-tree --no-commit-id --name-only -r
+	dev = checkout develop
+	dt = difftool
+[merge]
+	tool = kdiff3
+[mergetool "kdiff3"]
+	path = "C:/Program Files/KDiff3/kdiff3.exe"
+	keepBackup = false
+    trustExitCode = false
+[diff]
+	tool = kdiff3
+	guitool = kdiff3
+[difftool "kdiff3"]
+	path = "C:/Program Files/KDiff3/kdiff3.exe"
+	cmd = kdiff3 $LOCAL $REMOTE
+	prompt = false
+	keepBackup = false
+    trustExitCode = false
+[difftool]
+	prompt = false
+[mergetool]
+	prompt = false
+[merge "ours"]
+	driver = true
