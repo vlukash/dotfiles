@@ -10,7 +10,12 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
-Plugin 'powerline/powerline'
+"Plugin 'powerline/powerline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
+Plugin 'jlanzarotta/bufexplorer'
+
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'jnurmine/Zenburn'
 Plugin 'altercation/vim-colors-solarized'
@@ -22,14 +27,18 @@ Plugin 'scrooloose/syntastic'
 Plugin 'ervandew/supertab'
 Plugin 'SirVer/ultisnips'
 
-"Plugin 'craigemery/vim-autotag'
+Plugin 'sjl/gundo.vim'
+
+Plugin 'mileszs/ack.vim'
+
+Plugin 'majutsushi/tagbar'
 
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
 
-Plugin 'ap/vim-buftabline'
+"Plugin 'ap/vim-buftabline'
 
 Plugin 'nicolalamacchia/powerline-consolas'
 
@@ -224,11 +233,20 @@ nnoremap <silent> <C-Down> :resize -5<cr>
 " Section Plugins {{{
 
 " airline options
-let g:Powerline_symbols = 'fancy'
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
-:
+"let g:Powerline_symbols = 'fancy'
+"python from powerline.vim import setup as powerline_setup
+"python powerline_setup()
+"python del powerline_setup
+
+" Just show the filename (no path) in the tab
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#fnamecollapse = 0
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#show_buffers=1
+let g:airline#extensions#tabline#show_tabs = 0
+"let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
+
 " CtrlP options
 let g:ctrlp_max_files=0
 let g:ctrlp_clear_cache_on_exit = 0
@@ -422,6 +440,20 @@ let g:EasyMotion_smartcase = 1
 map <Leader>j <Plug>(easymotion-j)
 map <Leader>k <Plug>(easymotion-k) 
 
+" gundo settings
+" toggle gundo
+nnoremap <leader>u :GundoToggle<CR>
+
+" ACK settings
+cnoreabbrev Ack Ack!
+nnoremap <Leader>a :Ack!<Space>
+
+" Ctags
+"!ctags {.,**}/*.{cs,ts,tsx}
+"ctags −−languages=c#,typescript,tsx .
+
+" Tagbar
+nnoremap <silent> <Leader>. :TagbarToggle<CR>
 
 " }}}
 
