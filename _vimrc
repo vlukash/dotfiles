@@ -1,58 +1,55 @@
+call plug#begin('~/.vim/plugged')
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" Make sure you use single quotes
 
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+Plug 'gmarik/Vundle.vim'
 
 " Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
-"Plugin 'powerline/powerline'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
-Plugin 'jlanzarotta/bufexplorer'
+Plug 'jlanzarotta/bufexplorer'
 
-Plugin 'tmhedberg/SimpylFold'
-Plugin 'jnurmine/Zenburn'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'kien/ctrlp.vim'
-Plugin 'scrooloose/nerdtree'
-"Plugin 'junegunn/fzf.vim' " fuzzy file finder and so much more
+Plug 'tmhedberg/SimpylFold'
+Plug 'jnurmine/Zenburn'
+Plug 'altercation/vim-colors-solarized'
+Plug 'kien/ctrlp.vim'
+Plug 'scrooloose/nerdtree'
 
-Plugin 'scrooloose/syntastic'
-Plugin 'ervandew/supertab'
-Plugin 'SirVer/ultisnips'
+Plug 'scrooloose/syntastic'
+Plug 'ervandew/supertab'
+Plug 'SirVer/ultisnips'
 
-Plugin 'sjl/gundo.vim'
+Plug 'sjl/gundo.vim'
 
-Plugin 'mileszs/ack.vim'
+Plug 'mileszs/ack.vim'
 
-Plugin 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 
-Plugin 'easymotion/vim-easymotion'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-fugitive'
+Plug 'kshenoy/vim-signature'
 
-"Plugin 'ap/vim-buftabline'
+Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
 
-Plugin 'nicolalamacchia/powerline-consolas'
+Plug 'nicolalamacchia/powerline-consolas'
 
 " TypeScript 
-Plugin 'leafgarland/typescript-vim', { 'for': 'typescript' } " typescript support
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' } " typescript support
 
 " C#
-Plugin 'OmniSharp/omnisharp-vim'
-Plugin 'tpope/vim-dispatch'
+Plug 'OmniSharp/omnisharp-vim'
+Plug 'tpope/vim-dispatch'
+
+" F#
+Plug 'fsharp/vim-fsharp', {'for': 'fsharp'}
+
+" Add plugins to &runtimepath
+call plug#end()
 
 
-" Plug 'clausreinke/typescript-tools.vim', { 'for': 'typescript' } " typescript tools
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
 filetype plugin indent on    " required
 
 
@@ -68,9 +65,6 @@ set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
 " }}}
-
-
-
 
 " Section User Interface {{{
 
@@ -95,6 +89,7 @@ let &t_AF="\e[38;5;%dm"
 " make the highlighting of tabs and other non-text less annoying
 highlight NonText ctermbg=none ctermfg=239
 highlight SpecialKey ctermbg=none ctermfg=239
+hi SignColumn ctermbg=0
 
 set number                  " show line numbers
 set relativenumber          " show relative line numbers
