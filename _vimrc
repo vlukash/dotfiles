@@ -33,6 +33,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
 
 Plug 'nicolalamacchia/powerline-consolas'
 
@@ -82,7 +83,7 @@ inoremap <Esc>[63~ <C-X><C-Y>
 nnoremap <Esc>[62~ <C-E>
 nnoremap <Esc>[63~ <C-Y>
 set t_Co=256                " Explicitly tell vim that the terminal supports 256 colors"
-"colorscheme dracula         " Set the colorscheme
+"colorscheme solarized         " Set the colorscheme
 let &t_AB="\e[48;5;%dm"
 let &t_AF="\e[38;5;%dm"
 
@@ -351,9 +352,9 @@ augroup omnisharp_commands
     autocmd FileType cs nnoremap <leader>tt :OmniSharpTypeLookup<cr>
     autocmd FileType cs nnoremap <leader>dc :OmniSharpDocumentation<cr>
     "navigate up by method/property/field
-    autocmd FileType cs nnoremap <leader>k :OmniSharpNavigateUp<cr>
+    "autocmd FileType cs nnoremap <leader>k :OmniSharpNavigateUp<cr>
     "navigate down by method/property/field
-    autocmd FileType cs nnoremap <leader>j :OmniSharpNavigateDown<cr>	
+    "autocmd FileType cs nnoremap <leader>j :OmniSharpNavigateDown<cr>	
 
 augroup END
 
@@ -403,6 +404,9 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_loc_list_height=5
 
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+nnoremap <C-w>e :SyntasticCheck<CR> :SyntasticToggleMode<CR>
+
 "navigate down to the next error
 autocmd FileType cs nnoremap <leader>e :SyntasticNext<cr>
 "autocmd FileType cs nnoremap <leader> :SyntasticPrev<cr>
@@ -433,7 +437,7 @@ let g:EasyMotion_smartcase = 1
 
 " JK motions: Line motions
 map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k) 
+map <Leader>k <Plug>(easymotion-k)
 
 " gundo settings
 " toggle gundo
