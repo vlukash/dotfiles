@@ -1,5 +1,6 @@
 call plug#begin('~/.vim/plugged')
 
+
 " Make sure you use single quotes
 
 " let Vundle manage Vundle, required
@@ -35,10 +36,14 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 
+Plug 'airblade/vim-gitgutter'
+
 Plug 'nicolalamacchia/powerline-consolas'
 
 " TypeScript 
+Plug 'Shougo/vimproc'
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' } " typescript support
+Plug 'Quramy/tsuquyomi'
 
 " C#
 Plug 'OmniSharp/omnisharp-vim'
@@ -46,6 +51,9 @@ Plug 'tpope/vim-dispatch'
 
 " F#
 Plug 'fsharp/vim-fsharp', {'for': 'fsharp'}
+
+" Snippets
+Plug 'honza/vim-snippets'
 
 " Add plugins to &runtimepath
 call plug#end()
@@ -76,6 +84,7 @@ set fileencoding=utf-8
 set fileencodings=ucs-bom,utf8,prc
 set termencoding=utf8
 set term=xterm
+"set term=cons25
 set mouse=a
 set ttymouse=xterm2
 inoremap <Esc>[62~ <C-X><C-E>
@@ -131,6 +140,11 @@ set foldlevel=1
 
 set clipboard=unnamed
 
+" set binary
+set noeol
+set nofixeol
+set fileformats+=dos
+
 set ttyfast                 " faster redrawing
 set lazyredraw
 set diffopt+=vertical
@@ -162,6 +176,9 @@ set ttimeoutlen=0
 
 set pastetoggle=<F2> 		"F2 before pasting to preserve indentation
 
+" move by words
+set iskeyword=65-90,95,97-122,48-57 "the same: a-z,_,A-Z,0-9
+
 " buffers
 nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
@@ -191,8 +208,16 @@ let mapleader = "\<Space>"
 " remap esc
 inoremap jk <esc>
 
+" change the word with 0 reg
+nmap <c-;> ciw<c-r>0jk
+
+" add line and stay in normal mode
+nmap <S-CR> O<Esc>j
+nmap <CR> o<Esc>k
+
 " edit ~/_vimrc
 map <leader>ev :e! ~/_vimrc<cr>
+map <leader>er :so ~/_vimrc<cr>
 
 " clear highlighted search
 noremap <leader>h :set hlsearch! hlsearch?<cr>
@@ -329,10 +354,10 @@ augroup omnisharp_commands
     " Synchronous build (blocks Vim)
     "autocmd FileType cs nnoremap <F5> :wa!<cr>:OmniSharpBuild<cr>
     " automatic syntax check on events (TextChanged requires Vim 7.4)
-    autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
+    "autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
 
     " Automatically add new cs files to the nearest project on save
-    autocmd BufWritePost *.cs call OmniSharp#AddToProject()
+    "autocmd BufWritePost *.cs call OmniSharp#AddToProject()
 
     "show type information automatically when the cursor stops moving
     autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
@@ -404,8 +429,11 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_loc_list_height=5
 
+"let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['*.cs'],'passive_filetypes': [] }
+"nnoremap <C-w>e :SyntasticCheck<CR> :SyntasticToggleMode<CR>
 let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
-nnoremap <C-w>e :SyntasticCheck<CR> :SyntasticToggleMode<CR>
+noremap <C-w>e :SyntasticCheck<CR>
+noremap <C-w>f :SyntasticToggleMode<CR>
 
 "navigate down to the next error
 autocmd FileType cs nnoremap <leader>e :SyntasticNext<cr>
@@ -438,6 +466,9 @@ let g:EasyMotion_smartcase = 1
 " JK motions: Line motions
 map <Leader>j <Plug>(easymotion-j)
 map <Leader>k <Plug>(easymotion-k)
+map <Leader>w <Plug>(easymotion-w)
+" map <Leader>b <Plug>(easymotion-b)
+map <Leader>f <Plug>(easymotion-f)
 
 " gundo settings
 " toggle gundo
@@ -453,6 +484,21 @@ nnoremap <Leader>a :Ack!<Space>
 
 " Tagbar
 nnoremap <silent> <Leader>. :TagbarToggle<CR>
+
+" tsuquyomi
+let g:tsuquyomi_disable_quickfix = 1
+let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
+autocmd FileType typescript nmap <buffer> <Leader>e <Plug>(TsuquyomiRenameSymbol)
+autocmd FileType typescript nmap <buffer> <Leader>E <Plug>(TsuquyomiRenameSymbolC)
+
+" ultisnips
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<s-tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
 
 " }}}
 
