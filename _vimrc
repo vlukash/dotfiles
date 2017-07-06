@@ -55,6 +55,9 @@ Plug 'fsharp/vim-fsharp', {'for': 'fsharp'}
 " Snippets
 Plug 'honza/vim-snippets'
 
+" Games
+Plug 'johngrib/vim-game-code-break'
+
 " Add plugins to &runtimepath
 call plug#end()
 
