@@ -44,6 +44,8 @@ Plug 'airblade/vim-gitgutter'
 
 Plug 'nicolalamacchia/powerline-consolas'
 
+Plug 'kana/vim-submode'
+
 " TypeScript 
 Plug 'Shougo/vimproc'
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' } " typescript support
@@ -296,11 +298,14 @@ nmap <leader>- :split<CR>
 nmap <leader>\ :vsplit<CR>
 
 " resize panes
-" nnoremap <leader>rj :vertical resize +5<cr>
-" nnoremap <silent> <C-Left> :vertical resize -5<cr>
-" nnoremap <silent> <C-Up> :resize +5<cr>
-" nnoremap <silent> <C-Down> :resize -5<cr>
-
+call submode#enter_with('grow/shrink', 'n', '', '<leader>rh', ':vertical resize -5<cr>')
+call submode#enter_with('grow/shrink', 'n', '', '<leader>rl', ':vertical resize +5<cr>')
+call submode#map('grow/shrink', 'n', '', 'l', ':vertical resize +5<cr>')
+call submode#map('grow/shrink', 'n', '', 'h', ':vertical resize -5<cr>')
+call submode#enter_with('grow/shrink', 'n', '', '<leader>rk', ':resize +5<cr>')
+call submode#enter_with('grow/shrink', 'n', '', '<leader>rj', ':resize -5<cr>')
+call submode#map('grow/shrink', 'n', '', 'j', ':resize -5<cr>')
+call submode#map('grow/shrink', 'n', '', 'k', ':resize +5<cr>')
 " }}}
 
 " Section Plugins {{{
@@ -557,6 +562,12 @@ nmap <silent><leader>gs :Gstatus<cr>
 nmap <leader>ge :Gedit<cr>
 nmap <silent><leader>gr :Gread<cr>
 nmap <silent><leader>gb :Gblame<cr>
+
+"submode
+""disable submode timeouts:
+let g:submode_timeout = 0
+" don't consume submode-leaving key
+let g:submode_keep_leaving_key = 1
 
 " }}}
 
