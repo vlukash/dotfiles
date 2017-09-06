@@ -1,6 +1,5 @@
 call plug#begin('~/.vim/plugged')
 
-
 " Make sure you use single quotes
 
 " let Vundle manage Vundle, required
@@ -95,9 +94,9 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 " Section User Interface {{{
 "
 if &term =~ "xterm\\|rxvt"
-  " use an orange cursor in insert mode
+  " use a white cursor in insert mode
   let &t_SI = "\<Esc>]12;white\x7"
-  " use a red cursor otherwise
+  " use a white cursor otherwise
   let &t_EI = "\<Esc>]12;white\x7"
   silent !echo -ne "\033]12;white\007"
   " reset cursor when vim exits
@@ -139,13 +138,9 @@ set background=dark
 " make the highlighting of tabs and other non-text less annoying
 highlight NonText ctermbg=none ctermfg=238
 highlight SpecialKey ctermbg=none ctermfg=238
-" hi SignColumn ctermbg=0
-" make comments and HTML attributes italic
+
+" make comments italic
 highlight Comment cterm=italic
-" highlight htmlArg cterm=italic
-" highlight xmlAttrib cterm=italic
-" highlight Type cterm=italic
-" highlight Normal ctermbg=none
 
 set number                  " show line numbers
 set relativenumber          " show relative line numbers
@@ -161,8 +156,6 @@ set smartindent
 " toggle invisible characters
 set list
 set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮,space:·
-
-" set listchars=tab:→\ ,eol:¬,trail:·,extends:>,precedes:<,space:·
 
 " highlight conflicts
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
@@ -183,7 +176,7 @@ set completeopt+=longest
 set foldmethod=indent		" fold based on indent
 set foldnestmax=10          " deepest fold is 10 levels
 set foldlevelstart=10		" open most folds by default
-"set nofoldenable            " don't fold by default
+set nofoldenable            " don't fold by default
 set foldlevel=1
 
 " set clipboard=unnamed
@@ -247,8 +240,8 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-inoremap <Char-0x07F> <BS>
-nnoremap <Char-0x07F> <BS>
+" inoremap <Char-0x07F> <BS>
+" nnoremap <Char-0x07F> <BS>
 
 
 " Section Mappings {{{
@@ -257,18 +250,24 @@ nnoremap <Char-0x07F> <BS>
 let mapleader = "\<Space>"
 
 " remap esc
-inoremap jk <esc>
+inoremap jk <esc>l
+
+" shortcut to save
+nmap <leader><leader> :w<cr>
 
 " change the word with 0 reg
-nmap <c-;> ciw<c-r>0jk
+nmap <leader>; ciw<C-r>0jk
 
 " add line and stay in normal mode
-nmap <S-CR> O<Esc>j
-nmap <CR> o<Esc>k
+" nmap <S-CR> O<Esc>j
+nmap <leader><CR> o<Esc>k
 
 " edit ~/.vimrc
 map <leader>ev :e! ~/.vimrc<cr>
 map <leader>er :so ~/.vimrc<cr>
+
+" edit gitconfig
+map <leader>eg :e! ~/.gitconfig<cr>
 
 " clear highlighted search
 noremap <leader>h :set hlsearch! hlsearch?<cr>
@@ -290,15 +289,17 @@ nnoremap <silent> k gk
 nnoremap <silent> ^ g^
 nnoremap <silent> $ g$
 
-" zoom a vim pane, <C-w>= to re-balance
-nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
-nnoremap <leader>= :wincmd =<cr>
+map <leader>wc :wincmd q<cr>
+
+" splitting current buffer
+nmap <leader>- :split<CR>
+nmap <leader>\ :vsplit<CR>
 
 " resize panes
-nnoremap <silent> <C-Right> :vertical resize +5<cr>
-nnoremap <silent> <C-Left> :vertical resize -5<cr>
-nnoremap <silent> <C-Up> :resize +5<cr>
-nnoremap <silent> <C-Down> :resize -5<cr>
+" nnoremap <leader>rj :vertical resize +5<cr>
+" nnoremap <silent> <C-Left> :vertical resize -5<cr>
+" nnoremap <silent> <C-Up> :resize +5<cr>
+" nnoremap <silent> <C-Down> :resize -5<cr>
 
 " }}}
 
@@ -390,7 +391,6 @@ set completeopt=longest,menuone,preview
 
 "Move the preview window (code documentation) to the bottom of the screen, so it doesn't move the code!
 "You might also want to look at the echodoc plugin
-set splitbelow
 
 " Get Code Issues and syntax errors
 "let g:syntastic_cs_checkers = ['syntax', 'semantic', 'issues']
@@ -440,9 +440,9 @@ set updatetime=500
 set cmdheight=2
 
 " Contextual code actions (requires CtrlP or unite.vim)
-nnoremap <leader><space> :OmniSharpGetCodeActions<cr>
+" nnoremap <leader><space> :OmniSharpGetCodeActions<cr>
 " Run code actions with text selected in visual mode to extract method
-vnoremap <leader><space> :call OmniSharp#GetCodeActions('visual')<cr>
+" vnoremap <leader><space> :call OmniSharp#GetCodeActions('visual')<cr>
 
 " rename with dialog
 nnoremap <leader>nm :OmniSharpRename<cr>
@@ -501,7 +501,7 @@ hi link BufTabLineFill Normal
 autocmd FileType c,cpp,cs,java,js,ts setlocal commentstring=//\ %s
 
 " Easymotion settings
- let g:EasyMotion_do_mapping = 0 " Disable default mappings
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
 " `s{char}{label}`
@@ -550,6 +550,13 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
+
+" Fugitive Shortcuts
+"""""""""""""""""""""""""""""""""""""
+nmap <silent><leader>gs :Gstatus<cr>
+nmap <leader>ge :Gedit<cr>
+nmap <silent><leader>gr :Gread<cr>
+nmap <silent><leader>gb :Gblame<cr>
 
 " }}}
 
