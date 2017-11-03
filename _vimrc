@@ -505,4 +505,51 @@ let g:UltiSnipsEditSplit="vertical"
 
 " }}}
 
+" Plug vim-fugitive
+autocmd QuickFixCmdPost *grep* cwindow
+
 " vim:foldmethod=marker:foldlevel=0
+"
+"
+" " Custom Scripts
+function! Get_git_root()
+    if exists('*fugitive#repo')
+	try
+	    return fugitive#repo().tree()
+	catch
+	endtry
+    endif
+    let root = split(system('git rev-parse --show-toplevel'), '\n')[0]
+    return v:shell_error ? '' : root
+endfunction
+function! DiffFile()
+    let winheight = winheight(winnr())
+    let branchname=b:branchName
+    let filename = substitute(getline('.'), '^\w*\s*\(.*\)', '\1', '')
+    let gitroot = b:gitroot
+    only
+    wincmd s
+    wincmd k
+    execute 'resize '.winheight
+    wincmd k
+    wincmd J
+    wincmd k
+    execute 'cd '.gitroot
+    execute 'edit '.filename
+    execute 'Gdiff '.branchname
+endfunction
+function! GDiffBranch(branchName)
+    let gitroot = Get_git_root()
+    let tmpfile = tempname()
+    execute 'pedit '.tmpfile
+    wincmd P
+    let b:branchName=a:branchName
+    let b:gitroot = gitroot
+    nmap <buffer> q :q!<cr>
+    execute 'silent read! git diff --name-status '.a:branchName
+    normal! ggdd
+    resize 12
+    setlocal nomodifiable
+    nmap <buffer> gd :call DiffFile()<cr>
+endfunction
+command! -nargs=1 GDiffBranch call GDiffBranch(<q-args>)
