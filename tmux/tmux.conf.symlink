@@ -1,9 +1,6 @@
-# set -g default-command "login-shell"
-# set-option -g default-shell /bin/zsh
-set-option -g default-shell $SHELL
-
 # tmux display things in 256 colors
 set -g default-terminal "xterm-256color"
+set -s set-clipboard off
 
 #  enable terminal compability
 set -ga terminal-overrides ",xterm-256color:Tc"
@@ -36,6 +33,9 @@ set -sg escape-time 0
 # tile all windows
 unbind =
 bind = select-layout tiled
+
+# kill window
+bind q confirm kill-window
 
 # make window/pane index start with 1
 set -g base-index 1
@@ -86,13 +86,13 @@ unbind [
 bind Escape copy-mode
 unbind p
 bind p paste-buffer
-bind-key -t vi-copy 'v' begin-selection
-bind-key -t vi-copy V select-line; \
-bind-key -t vi-copy 'y' copy-selection
-bind-key -t vi-copy 'r' rectangle-toggle
+bind-key -T copy-mode-vi v send-keys -X begin-selection
+bind-key -T copy-mode-vi V send-keys -X select-line; \
+bind-key -T copy-mode-vi y send-keys -X copy-selection
+bind-key -T copy-mode-vi r send-keys -X rectangle-toggle
 # Buffers to/from clipboard, yay tmux book from pragprog
-bind -t vi-copy y copy-pipe "xclip -sel clip -i"
-# bind C-p run-shell "tmux set-buffer \"$(xclip -o)\"; tmux paste-buffer"
+bind-key -T copy-mode-vi y send-keys -X copy-pipe "xclip -sel clip -i"
+bind-key p run-shell "tmux set-buffer \"$(xclip -o)\"; tmux paste-buffer"
 # bind C-y run-shell "tmux show-buffer | xclip -sel clip -i"
 
 ##############################
