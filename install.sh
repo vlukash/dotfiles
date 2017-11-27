@@ -20,8 +20,27 @@ sudo apt-get install zsh -y
 echo -e "\nInstalling tmux..."
 sudo apt-get install tmux -y
 
+echo -e "\nInstalling xclip..."
+sudo apt-get install xclip
+
 echo -e "\nInstalling git and bash-completion..."
 sudo apt-get install git bash-completion -y
+
+echo -e "\nInstalling z..."
+git clone https://github.com/rupa/z.git ~/.zi
+
+
+echo -e "\nInstalling tmux 2.6..."
+sudo apt-get install build-essential curl git python-setuptools ruby;
+sudo apt-get install build-essential libevent-dev libncurses-dev;
+wget -O tmux-2.6.tar.gz https://github.com/tmux/tmux/releases/download/2.6/tmux-2.6.tar.gz;
+tar -zvxf tmux-2.6.tar.gz;
+cd tmux-2.6/
+
+./configure;
+make;
+sudo make install;
+tmux -V;
 
 echo -e "\nConfiguring git-completion..."
 GIT_VERSION=`git --version | awk '{print $3}'`
@@ -41,6 +60,9 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-sy
 
 echo -e "\nInstalling spaceship-zsh-theme..."
 curl -e - https://raw.githubusercontent.com/denysdovhan/spaceship-zsh-theme/master/install.zsh | zsh
+
+echo -e "\nInstalling dircolors..."
+wget https://raw.github.com/trapd00r/LS_COLORS/master/LS_COLORS -O $HOME/.dircolors
 
 echo -e "\nInstalling vim-plug..."
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
