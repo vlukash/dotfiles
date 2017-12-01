@@ -470,6 +470,15 @@ set hidden
 " Enable snippet completion, requires completeopt-=preview
 let g:OmniSharp_want_snippet=1
 
+" F#, fsharp
+augroup fsharp
+    au!
+    autocmd FileType fsharp set et ts=4 sw=4
+    autocmd FileType fsharp nnoremap <buffer> <leader>r :FsiShow<Enter>
+    autocmd FileType fsharp nnoremap <buffer> <leader>c :FsiClear<Enter>
+augroup END
+
+let g:fsharp_completion_helptext = 1
 
 " syntastic settings
 "set statusline+=%#warningmsg#
