@@ -1,8 +1,5 @@
 call plug#begin('~/.vim/plugged')
 
-
-" Make sure you use single quotes
-
 " let Vundle manage Vundle, required
 Plug 'gmarik/Vundle.vim'
 
@@ -19,7 +16,9 @@ Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 
 Plug 'scrooloose/syntastic'
-Plug 'ervandew/supertab'
+
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
+
 Plug 'SirVer/ultisnips'
 
 Plug 'sjl/gundo.vim'
@@ -41,20 +40,71 @@ Plug 'airblade/vim-gitgutter'
 
 Plug 'nicolalamacchia/powerline-consolas'
 
-" TypeScript 
-Plug 'Shougo/vimproc'
-Plug 'leafgarland/typescript-vim', { 'for': 'typescript' } " typescript support
-Plug 'Quramy/tsuquyomi'
+" endings for html, xml, etc. - ehances surround
+Plug 'tpope/vim-ragtag'
 
-" C#
-Plug 'OmniSharp/omnisharp-vim'
-Plug 'tpope/vim-dispatch'
+" .editorconfig support
+Plug 'editorconfig/editorconfig-vim'
 
-" F#
-Plug 'fsharp/vim-fsharp', {'for': 'fsharp'}
+" insert or delete brackets, parens, quotes in pair
+Plug 'jiangmiao/auto-pairs'
+
+" extended % matching
+Plug 'vim-scripts/matchit.zip'
+
+" detect indent style (tabs vs. spaces)
+Plug 'tpope/vim-sleuth'
 
 " Snippets
 Plug 'honza/vim-snippets'
+
+" html / templates {{{
+    " emmet support for vim - easily create markdup wth CSS-like syntax
+    Plug 'mattn/emmet-vim', { 'for': ['html', 'javascript.jsx'] }
+    let g:user_emmet_settings = {
+    \  'javascript.jsx': {
+    \	   'extends': 'jsx',
+    \  },
+    \}
+
+    " html5 support
+    Plug 'othree/html5.vim', { 'for': 'html' }
+
+" }}}
+
+" Styles {{{
+    Plug 'wavded/vim-stylus', { 'for': ['stylus', 'markdown'] }
+    Plug 'groenewege/vim-less', { 'for': 'less' }
+    Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
+    Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
+    Plug 'gko/vim-coloresque'
+    Plug 'stephenway/postcss.vim', { 'for': 'css' }
+" }}}
+
+" JSON {{{
+    Plug 'elzr/vim-json', { 'for': 'json' }
+    let g:vim_json_syntax_conceal = 0
+" }}}
+
+" JavaScript / TypeScript {{{
+    Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx', 'html'] }
+    Plug 'moll/vim-node', { 'for': 'javascript' }
+    Plug 'mxw/vim-jsx', { 'for': ['javascript.jsx', 'javascript'] }
+    Plug 'ternjs/tern_for_vim', { 'for': ['javascript', 'javascript.jsx'], 'do': 'npm install' }
+
+    Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
+    Plug 'angelozerr/tslint-language-service', { 'for': 'typescript' }
+    Plug 'Quramy/tsuquyomi', { 'for': 'typescript', 'do': 'npm install' }
+" }}}
+
+" C# {{{
+    Plug 'OmniSharp/omnisharp-vim'
+    Plug 'tpope/vim-dispatch'
+" }}}
+
+" F# {{{
+    Plug 'fsharp/vim-fsharp', {'for': 'fsharp'}
+" }}}
 
 " Games
 Plug 'johngrib/vim-game-code-break'
@@ -314,7 +364,7 @@ map <silent> <leader>nf :NERDTreeFind<cr>
 
 " OmniSharp options
 
-let g:OmniSharp_server_type = 'v1'
+" let g:OmniSharp_server_type = 'v1'
 let g:OmniSharp_server_type = 'roslyn'
 
 " OmniSharp won't work without this setting
@@ -358,23 +408,10 @@ set splitbelow
 let g:syntastic_cs_checkers = ['code_checker']
 augroup omnisharp_commands
     autocmd!
-
     "Set autocomplete function to OmniSharp (if not using YouCompleteMe completion plugin)
     autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
-
-    " Synchronous build (blocks Vim)
-    "autocmd FileType cs nnoremap <F5> :wa!<cr>:OmniSharpBuild<cr>
-    " automatic syntax check on events (TextChanged requires Vim 7.4)
-    "autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
-
-    " Automatically add new cs files to the nearest project on save
-    "autocmd BufWritePost *.cs call OmniSharp#AddToProject()
-
-    "show type information automatically when the cursor stops moving
     autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
-
     "The following commands are contextual, based on the current cursor position.
-
     autocmd FileType cs nnoremap gd :OmniSharpGotoDefinition<cr>
     autocmd FileType cs nnoremap <leader>fi :OmniSharpFindImplementations<cr>
     autocmd FileType cs nnoremap <leader>ft :OmniSharpFindType<cr>
@@ -387,11 +424,6 @@ augroup omnisharp_commands
     autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
     autocmd FileType cs nnoremap <leader>tt :OmniSharpTypeLookup<cr>
     autocmd FileType cs nnoremap <leader>dc :OmniSharpDocumentation<cr>
-    "navigate up by method/property/field
-    "autocmd FileType cs nnoremap <leader>k :OmniSharpNavigateUp<cr>
-    "navigate down by method/property/field
-    "autocmd FileType cs nnoremap <leader>j :OmniSharpNavigateDown<cr>	
-
 augroup END
 
 " this setting controls how long to wait (in ms) before fetching type / symbol information.
@@ -499,9 +531,18 @@ autocmd QuickFixCmdPost *grep* cwindow
 " gitgutter
 let g:gitgutter_diff_base = "origin/master"
 
+"YCM
+" Start autocompletion after 2 chars
+let g:ycm_min_num_of_chars_for_completion = 2
+let g:ycm_min_num_identifier_candidate_chars = 2
+let g:ycm_enable_diagnostic_highlighting = 0
 
-"
-" " Custom Scripts
+" Don't show YCM's preview window
+set completeopt-=preview
+let g:ycm_add_preview_to_completeopt = 0
+
+
+" Custom Scripts
 function! Get_git_root()
     if exists('*fugitive#repo')
 	try
