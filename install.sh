@@ -70,6 +70,7 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 
 echo -e "\nCreating vim directories"
 mkdir -p ~/.vim-tmp
+mkdir -p ~/.vim/undodir
 
 echo -e "\nCreating symlinks"
 echo "=============================="
