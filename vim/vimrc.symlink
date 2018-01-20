@@ -355,12 +355,6 @@ call submode#map('grow/shrink', 'n', '', 'k', ':resize +5<cr>')
 
 " Section Plugins {{{
 
-" airline options
-"let g:Powerline_symbols = 'fancy'
-"python from powerline.vim import setup as powerline_setup
-"python powerline_setup()
-"python del powerline_setup
-
 " Just show the filename (no path) in the tab
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#enabled = 1
@@ -431,7 +425,7 @@ let g:syntastic_cs_checkers = ['code_checker']
 augroup omnisharp_commands
     autocmd!
     "Set autocomplete function to OmniSharp (if not using YouCompleteMe completion plugin)
-    autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
+    " autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
     "show type information automatically when the cursor stops moving
     autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
     "The following commands are contextual, based on the current cursor position.

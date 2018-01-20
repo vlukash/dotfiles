@@ -7,8 +7,8 @@ source $ZSH/oh-my-zsh.sh
 
 source "/home/vova/.oh-my-zsh/custom/themes/TheOne.zsh-theme"
 
-export EDITOR='nvim'
-export GIT_EDITOR='nvim'
+export EDITOR='vim'
+export GIT_EDITOR='vim'
 
 export PATH=/usr/local/bin:$PATH
 
