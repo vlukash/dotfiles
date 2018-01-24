@@ -20,17 +20,18 @@ Set-TaskbarOptions -Size Small -Lock -Combine Never
 Install-Module posh-git -Force
 Install-Module z -Force
 
-choco install vim -y
-choco install cmder -y
-choco install curl -y
-choco install python2 -y
+cinst vim -y
+cinst cmder -y
+cinst curl -y
+cinst python2 -y
 
-choco install ditto -y
+cinst ditto -y
+cinst sharpkeys -y
 
-choco install keepass -y
+cinst keepass -y
 
-choco install notepadplusplus -y
-choco install visualstudiocode -y
+cinst notepadplusplus -y
+cinst visualstudiocode -y
 cinst kdiff3 -y
 
 cinst 7zip.install -y
@@ -53,4 +54,7 @@ New-Item -Path $home\.gitconfig -ItemType SymbolicLink -Value $dotfilesDir\git\g
 # ack symlink
 New-Item -Path $home\.tern-config -ItemType SymbolicLink -Value $dotfilesDir\tern\.tern-config -Force
 
-# Remap Caps
+# Remap CapsLock -> Ctrl
+$hexified = "00,00,00,00,00,00,00,00,02,00,00,00,1d,00,3a,00,00,00,00,00".Split(',') | % { "0x$_"};
+$kbLayout = 'HKLM:\System\CurrentControlSet\Control\Keyboard Layout';
+New-ItemProperty -Path $kbLayout -Name "Scancode Map" -PropertyType Binary -Value ([byte[]]$hexified);
