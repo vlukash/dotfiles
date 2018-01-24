@@ -19,6 +19,8 @@
 	show-files = diff-tree --no-commit-id --name-only -r
 	dev = checkout develop
 	dt = difftool
+	s = status
+
 [merge]
 	tool = kdiff3
 [mergetool "kdiff3"]
