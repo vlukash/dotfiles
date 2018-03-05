@@ -59,10 +59,17 @@ git clone git://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggesti
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
 
 echo -e "\nInstalling spaceship-zsh-theme..."
-curl -e - https://raw.githubusercontent.com/denysdovhan/spaceship-zsh-theme/master/install.zsh | zsh
+git clone https://github.com/denysdovhan/spaceship-prompt.git ~/.oh-my-zsh/custom/themes/spaceship-prompt
+ln -sf ~/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme ~/.oh-my-zsh/custom/themes/spaceship.zsh-theme
 
 echo -e "\nInstalling dircolors..."
 wget https://raw.github.com/trapd00r/LS_COLORS/master/LS_COLORS -O $HOME/.dircolors
+
+echo -e "\nInstalling OneDark terminal theme..."
+git clone https://github.com/benniemosher/the-one-theme/ ~/.oh-my-zsh/custom/themes/OneDark 
+ln -sf ~/.oh-my-zsh/custom/themes/OneDark/zsh/TheOne.zsh-theme ~/.oh-my-zsh/custom/themes/TheOne.zsh-theme
+
+wget https://raw.githubusercontent.com/denysdovhan/gnome-terminal-one/master/one-dark.sh && . one-dark.sh
 
 echo -e "\nInstalling vim-plug..."
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
@@ -77,12 +84,8 @@ echo "=============================="
 linkables=$( find -H "$DOTFILES" -maxdepth 3 -name '*.symlink' )
 for file in $linkables ; do
     target="$HOME/.$( basename $file '.symlink' )"
-    if [ -e $target ]; then
-        echo "~${target#$HOME} already exists... Skipping."
-    else
-        echo "Creating symlink for $file"
-        ln -s $file $target
-    fi
+    echo "Creating symlink for $file"
+    ln -sf $file $target
 done
 
 if ! hash zsh 2>/dev/null; then

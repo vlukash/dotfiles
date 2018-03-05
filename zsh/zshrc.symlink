@@ -1,11 +1,11 @@
-export ZSH=/home/vova/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 export DOTFILES=$HOME/.dotfiles
 
 ZSH_THEME="spaceship"
 
 source $ZSH/oh-my-zsh.sh
 
-source "/home/vova/.oh-my-zsh/custom/themes/TheOne.zsh-theme"
+source $ZSH/custom/themes/TheOne.zsh-theme
 
 export EDITOR='vim'
 export GIT_EDITOR='vim'
@@ -24,4 +24,4 @@ setxkbmap -layout us -option ctrl:nocaps
 
 . ~/.zi/z.sh
 
-source "/home/vova/.oh-my-zsh/custom/themes/TheOne.zsh-theme"
+source $ZSH/custom/themes/TheOne.zsh-theme
