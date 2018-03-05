@@ -2,7 +2,6 @@
 	name = Volodymyr Lukashevych
 	email = v.lukashevych@gmail.com
 [core]
-	autocrlf = true
 	excludesfile = C:\\Users\\lukashvo\\Documents\\gitignore_global.txt
 	preloadindex = true
 	fscache = true
