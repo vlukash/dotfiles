@@ -91,3 +91,7 @@ if command_exists hub; then
     eval "$(hub alias -s)"
 fi
 
+set editing-modei
+set keymap vi
+set -o vi
+bindkey -v

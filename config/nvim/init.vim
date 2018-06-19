@@ -316,12 +316,12 @@ call plug#begin('~/.config/nvim/plugged')
 
 	" Use Submode plugin to resize buffers {{{
 		Plug 'kana/vim-submode'
-		call submode#enter_with('grow/shrink', 'n', '', '<leader>=h', ':vertical resize -5<cr>')
-		call submode#enter_with('grow/shrink', 'n', '', '<leader>=l', ':vertical resize +5<cr>')
+		call submode#enter_with('grow/shrink', 'n', '', '<leader>`h', ':vertical resize -5<cr>')
+		call submode#enter_with('grow/shrink', 'n', '', '<leader>`l', ':vertical resize +5<cr>')
 		call submode#map('grow/shrink', 'n', '', 'l', ':vertical resize +5<cr>')
 		call submode#map('grow/shrink', 'n', '', 'h', ':vertical resize -5<cr>')
-		call submode#enter_with('grow/shrink', 'n', '', '<leader>=k', ':resize +5<cr>')
-		call submode#enter_with('grow/shrink', 'n', '', '<leader>=j', ':resize -5<cr>')
+		call submode#enter_with('grow/shrink', 'n', '', '<leader>`k', ':resize +5<cr>')
+		call submode#enter_with('grow/shrink', 'n', '', '<leader>`j', ':resize -5<cr>')
 		call submode#map('grow/shrink', 'n', '', 'j', ':resize -5<cr>')
 		call submode#map('grow/shrink', 'n', '', 'k', ':resize +5<cr>')
 	" }}}
@@ -367,6 +367,8 @@ call plug#begin('~/.config/nvim/plugged')
 		let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']	
 		let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']	
 		let g:ycm_show_diagnostics_ui = 0	
+
+		" let g:ycm_auto_start_csharp_server = 0
 	" }}}
 
 	" Easy Motion setup {{{
@@ -479,9 +481,11 @@ call plug#begin('~/.config/nvim/plugged')
 		Plug 'tpope/vim-fugitive'
 		Plug 'tpope/vim-rhubarb' " hub extension for fugitive
 		nmap <silent> <leader>gs :Gstatus<cr>
+		nmap <silent> <leader>gd :Gdiff<cr>
 		nmap <leader>ge :Gedit<cr>
 		nmap <silent><leader>gr :Gread<cr>
 		nmap <silent><leader>gb :Gblame<cr>
+		nmap <silent><leader>gu :diffupdate<cr>
 	" }}}
 
 	" ALE {{{
@@ -498,6 +502,29 @@ call plug#begin('~/.config/nvim/plugged')
 		\	'typescript': ['tsserver', 'tslint'],
 		\	'html': []
 		\}
+	" }}}
+
+	" Syntastic {{{
+		"Plug 'scrooloose/syntastic'
+		""set statusline+=%#warningmsg#
+		""set statusline+=%{SyntasticStatuslineFlag()}
+		""set statusline+=%*
+
+		"let g:syntastic_always_populate_loc_list = 1
+		"let g:syntastic_auto_loc_list = 1
+		"let g:syntastic_check_on_open = 1
+		"let g:syntastic_check_on_wq = 0
+		"let g:syntastic_loc_list_height=5
+
+		""let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['*.cs'],'passive_filetypes': [] }
+		""nnoremap <C-w>e :SyntasticCheck<CR> :SyntasticToggleMode<CR>
+		"let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+		"noremap <C-w>e :SyntasticCheck<CR>
+		"noremap <C-w>f :SyntasticToggleMode<CR>
+
+		""navigate down to the next error
+		"autocmd FileType cs nnoremap <leader>e :SyntasticNext<cr>
+		""autocmd FileType cs nnoremap <leader> :SyntasticPrev<cr>
 	" }}}
 
 	" UltiSnips {{{
@@ -576,6 +603,90 @@ call plug#begin('~/.config/nvim/plugged')
 	" JSON {{{
 		Plug 'elzr/vim-json', { 'for': 'json' }
 		let g:vim_json_syntax_conceal = 0
+	" }}}
+	
+	" C# {{{
+		Plug 'OmniSharp/omnisharp-vim'
+		" let g:OmniSharp_server_type = 'v1'
+		let g:OmniSharp_server_type = 'roslyn'
+
+		let g:OmniSharp_server_path = '/Users/lukasvo/.dotfiles/config/nvim/plugged/omnisharp-vim/omnisharp-roslyn/artifacts/scripts/OmniSharp.Http'
+
+		" OmniSharp won't work without this setting
+		filetype plugin on
+
+		"This is the default value, setting it isn't actually necessary
+		let g:OmniSharp_host = "http://localhost:2000"
+
+		"Timeout in seconds to wait for a response from the server
+		let g:OmniSharp_timeout = 1
+
+		"Showmatch significantly slows down omnicomplete
+		"when the first match contains parentheses.
+		set noshowmatch
+
+		"don't autoselect first item in omnicomplete, show if only one item (for preview)
+		"remove preview if you don't want to see any documentation whatsoever.
+		set completeopt=longest,menuone,preview
+		" Get Code Issues and syntax errors
+		"let g:syntastic_cs_checkers = ['syntax', 'semantic', 'issues']
+		" If you are using the omnisharp-roslyn backend, use the following
+		let g:syntastic_cs_checkers = ['code_checker']
+		augroup omnisharp_commands
+			autocmd!
+			"Set autocomplete function to OmniSharp (if not using YouCompleteMe completion plugin)
+			autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
+			"show type information automatically when the cursor stops moving
+			autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
+			"The following commands are contextual, based on the current cursor position.
+			autocmd FileType cs nnoremap gd :OmniSharpGotoDefinition<cr>
+			autocmd FileType cs nnoremap <leader>fi :OmniSharpFindImplementations<cr>
+			autocmd FileType cs nnoremap <leader>ft :OmniSharpFindType<cr>
+			autocmd FileType cs nnoremap <leader>fs :OmniSharpFindSymbol<cr>
+			autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
+			"finds members in the current buffer
+			autocmd FileType cs nnoremap <leader>fm :OmniSharpFindMembers<cr>
+			" cursor can be anywhere on the line containing an issue
+			autocmd FileType cs nnoremap <leader>x  :OmniSharpFixIssue<cr>
+			autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
+			autocmd FileType cs nnoremap <leader>tt :OmniSharpTypeLookup<cr>
+			autocmd FileType cs nnoremap <leader>dc :OmniSharpDocumentation<cr>
+
+			" Folding 
+			au FileType cs set omnifunc=syntaxcomplete#Complete 
+			au FileType cs set foldmethod=marker 
+			au FileType cs set foldmarker={,} 
+			au FileType cs set foldtext=substitute(getline(v:foldstart),'{.*','{...}',) 
+			au FileType cs set foldlevelstart=2 
+
+		augroup END
+
+		" this setting controls how long to wait (in ms) before fetching type / symbol information.
+		set updatetime=500
+		" Remove 'Press Enter to continue' message when type information is longer than one line.
+		set cmdheight=2
+
+		" rename with dialog
+		nnoremap <leader>nm :OmniSharpRename<cr>
+		nnoremap <F2> :OmniSharpRename<cr>
+		" rename without dialog - with cursor on the symbol to rename... ':Rename newname'
+		command! -nargs=1 Rename :call OmniSharp#RenameTo("<args>")
+
+		nnoremap <leader>cf :OmniSharpCodeFormat<cr>
+		" Load the current .cs file to the nearest project
+		nnoremap <leader>tp :OmniSharpAddToProject<cr>
+
+		" (Experimental - uses vim-dispatch or vimproc plugin) - Start the omnisharp server for the current solution
+		nnoremap <leader>ss :OmniSharpStartServer<cr>
+		nnoremap <leader>sp :OmniSharpStopServer<cr>
+
+		" Add syntax highlighting for types and interfaces
+		nnoremap <leader>th :OmniSharpHighlightTypes<cr>
+		"Don't ask to save when changing buffers (i.e. when jumping to a type definition)
+		set hidden
+
+		" Enable snippet completion, requires completeopt-=preview
+		let g:OmniSharp_want_snippet=1
 	" }}}
 
 	Plug 'fatih/vim-go', { 'for': 'go' }
