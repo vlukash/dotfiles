@@ -25,3 +25,5 @@ setxkbmap -layout us -option ctrl:nocaps
 . ~/.zi/z.sh
 
 source $ZSH/custom/themes/TheOne.zsh-theme
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

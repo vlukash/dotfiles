@@ -29,6 +29,9 @@ sudo apt-get install git bash-completion -y
 echo -e "\nInstalling z..."
 git clone https://github.com/rupa/z.git ~/.zi
 
+echo -e "\nInstalling FZF..."
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
 
 echo -e "\nInstalling tmux 2.6..."
 sudo apt-get install build-essential curl git python-setuptools ruby;
