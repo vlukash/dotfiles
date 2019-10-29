@@ -34,13 +34,13 @@ markup=none
 # The second parameter overrides the mixer selection
 # See the script for details.
 [volume]
-#label=VOL
-label=♪
+label=VOL
+# label=♪
 instance=Master
 #instance=PCM
-interval=1
+interval=once
 signal=10
-command=/usr/share/i3blocks/volume 5 pulse
+command=/usr/share/i3blocks/volume "5%" default
 
 # Memory usage
 #

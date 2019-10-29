@@ -9,7 +9,7 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-set $mod Mod1
+set $mod Mod4
 set $base00 #101218
 set $base01 #1f222d
 set $base02 #252936
@@ -28,8 +28,7 @@ set $base0E #c0b7f9
 set $base0F #fcc09e
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-#font pango:monospace 8
-font pango:System San Francisco Display 10
+font pango:monospace 8
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -49,11 +48,13 @@ floating_modifier $mod
 bindsym $mod+Return exec i3-sensible-terminal
 
 # kill focused window
-bindsym $mod+Shift+q kill
+bindsym $mod+q kill
 
 # start dmenu (a program launcher)
-#bindsym $mod+d exec dmenu_run
+# bindsym $mod+d exec dmenu_run
+bindsym $mod+g exec rofi -show window -config ~/.config/rofi
 bindsym $mod+d exec rofi -show run -config ~/.config/rofi
+bindsym $mod+b exec rofi -show Workspace -config ~/.config/rofi
 # -lines 5 -eh 2 -width 100 -padding 500 -opacity "80" -bw 0 -bc "$base01" -bg "$base02" -fg "$base07" -hlbg "$base05" -columns 2 -font "System San Francisco Display 18" -hlfg "#9575cd"
 #bindsym $mod+d exec --no-startup-id i3-demnu-desktop
 # There also is the (new) i3-dmenu-desktop which only displays applications
@@ -114,7 +115,6 @@ bindsym $mod+a focus parent
 
 
 # Startup Programs
-  exec --no-startup-id skype
   exec --no-startup-id google-chrome
   exec --no-startup-id nm-applet
   #exec --no-startup-id dunst
@@ -124,14 +124,11 @@ bindsym $mod+a focus parent
 
 set $workspace1 "1: Chrome "
 set $workspace2 "2: Terminal "
-set $workspace3 "3: Skype "
+set $workspace3 "3: "
 set $workspace4 "4: "
 set $workspace5 "5: "
 set $workspace6 "6: "
 set $workspace7 "7: "
-set $workspace8 "8: "
-set $workspace9 "9: "
-set $workspace10 "10: "
 
 # switch to workspace
 bindsym $mod+1 workspace $workspace1
@@ -141,9 +138,6 @@ bindsym $mod+4 workspace $workspace4
 bindsym $mod+5 workspace $workspace5
 bindsym $mod+6 workspace $workspace6
 bindsym $mod+7 workspace $workspace7
-bindsym $mod+8 workspace $workspace8
-bindsym $mod+9 workspace $workspace9
-bindsym $mod+0 workspace $workspace10
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $workspace1
@@ -153,13 +147,9 @@ bindsym $mod+Shift+4 move container to workspace $workspace4
 bindsym $mod+Shift+5 move container to workspace $workspace5
 bindsym $mod+Shift+6 move container to workspace $workspace6
 bindsym $mod+Shift+7 move container to workspace $workspace7
-bindsym $mod+Shift+8 move container to workspace $workspace8
-bindsym $mod+Shift+9 move container to workspace $workspace9
-bindsym $mod+Shift+0 move container to workspace $workspace10
 
 
 assign [class="Google-chrome"] $workspace1
-assign [class="Skype"] $workspace3
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -191,6 +181,7 @@ mode "resize" {
         # back to normal: Enter or Escape
         bindsym Return mode "default"
         bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
 }
 
 bindsym $mod+r mode "resize"
@@ -205,12 +196,10 @@ bindsym $mod+r mode "resize"
   client.unfocused        $base02 $base02    $base03 $base0F
   client.urgent           $base02 $base08    $base00 $base0F
 
-
-
 bar {
         #status_command i3status
         status_command i3blocks -c ~/.config/i3/i3blocks.conf
-    font pango: System San Francisco Display, FontAwesome 12
+        font pango: monospace, FontAwesome 10
         position top
         strip_workspace_numbers yes
         #bindsym button4 nop
@@ -229,13 +218,13 @@ bar {
 
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
+# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
+# bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
 
-# Sreen brightness controls
-# bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
-# bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%; exec pkill -SIGRTMIN+10 i3blocks
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%; exec pkill -SIGRTMIN+10 i3blocks
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle; exec pkill -SIGRTMIN+10 i3blocks
 
 # Brightness
 bindsym XF86MonBrightnessDown exec sudo /usr/local/bin/brightness mon - 500
@@ -246,17 +235,28 @@ bindsym XF86KbdBrightnessUp exec sudo /usr/local/bin/brightness kbd + 1
 bindsym XF86TouchpadToggle exec ~/.config/i3/toggletouchpad.sh # toggle touchpad
 
 # Media player controls
-bindsym XF86AudioPlay exec playerctl play
-bindsym XF86AudioPause exec playerctl pause
-bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioPrev exec playerctl previous
+# bindsym XF86AudioPlay exec playerctl play
+# bindsym XF86AudioPause exec playerctl pause
+# bindsym XF86AudioNext exec playerctl next
+# bindsym XF86AudioPrev exec playerctl previous
 
+# Spotify related key bindings
+bindsym XF86AudioPlay exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"
+bindsym XF86AudioStop exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop"
+bindsym XF86AudioPrev exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
+bindsym XF86AudioNext exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
+
+exec dex -ae i3
+
+bindsym Control+b exec xfce4-popup-clipman
+exec xfce4-clipman
+
+bindsym $mod+9 exec setxkbmap us
+bindsym $mod+8 exec setxkbmap ru
+# exec "setxkbmap -layout us,ru"
+# exec "setxkbmap -option 'grp:alt_shift_toggle'"
 
 # Set display mode
 #exec_always xrandr --output Virtual1 --mode 1360x768
-
-# Fix Nautilius issue on Ubuntu
-exec_always gsettings set org.gnome.desktop.background show-desktop-icons false
-exec_always gsettings set org.nemo.desktop show-desktop-icons false
 
 exec_always compton -f
